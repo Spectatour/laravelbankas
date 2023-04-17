@@ -1,0 +1,57 @@
+// Fonts
+@import url('https://fonts.bunny.net/css?family=Nunito');
+// Variables
+@import 'variables';
+// Bootstrap
+@import 'bootstrap/scss/bootstrap';
+.client-line {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    .client-info {
+        display: flex;
+        justify-content: space-around;
+        span {
+            color: crimson;
+            font-weight: bold;
+            letter-spacing: 5px;
+            padding-left: 20px;
+        }
+    }
+    .buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+}
+.home {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    h1 {
+        color: #E8985E;
+        font-size: 150px;
+        line-height: 1;
+        letter-spacing: 10px;
+        .sub {
+            color: skyblue;
+            font-size: 30px;
+            line-height: 1;
+            &.space {
+                letter-spacing: 50px;
+            }
+        }
+    }
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type=number]{
+    -moz-appearance: textfield;
+}
