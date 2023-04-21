@@ -9,7 +9,7 @@
                     <h1>Add Card</h1>
                 </div>
                 <div class="card-body">
-                    <form action="{{route('clients-store')}}" method="post">
+                    <form action="{{route('accounts-store')}}" method="post">
                         <div class="mb-3">
                             <label class="form-label">Card Name</label>
                             <input type="text" class="form-control" name="name" value={{old('name')}}>

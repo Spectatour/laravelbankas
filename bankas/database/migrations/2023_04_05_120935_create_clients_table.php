@@ -13,6 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
+        
+
+        
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100);
@@ -21,8 +24,10 @@ return new class extends Migration
             $table->char('asmensKodas', 11);
             $table->string('IBAN', 20);
             $table->unsignedTinyInteger('tt');
-            $table->unsignedBigInteger('town_id');
-            $table->foreign('town_id')->references('id')->on('towns');        });
+            $table->unsignedBigInteger('account_id');
+            $table->foreign('account_id')->references('id')->on('accounts');        });
+            
+        
     }
 
     /**

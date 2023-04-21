@@ -9,14 +9,15 @@
                     <h1>Add Towns</h1>
                 </div>
                 <div class="card-body">
-                    <form action="{{route('towns-store')}}" method="post">
+                    <form action="{{route('accounts-update', $account)}}" method="post">
                         <div class="mb-3">
                             <label class="form-label">Towns Name</label>
-                            <input type="text" class="form-control" name="name" value={{old('name')}}>
+                            <input type="text" class="form-control" name="name" value="{{ old('name', $account->name) }}">
                             <div class="form-text">Please add town name here</div>
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                         @csrf
+                        @method('put')
                     </form>
                 </div>
             </div>

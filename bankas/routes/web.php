@@ -6,6 +6,7 @@ use App\Http\Controllers\CalcController as C;
 use App\Http\Controllers\ClientController as CL;
 use App\Http\Controllers\OrderController as ORD;
 use App\Http\Controllers\TownController as TW;
+use App\Http\Controllers\AccountController as AC;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,6 +73,16 @@ Route::prefix('towns')->name('towns-')->group(function () {
     Route::get('/edit/{town}', [TW::class, 'edit'])->name('edit');
     Route::put('/edit/{town}', [TW::class, 'update'])->name('update');
     Route::delete('/delete/{town}', [TW::class, 'destroy'])->name('delete');
+});
+
+Route::prefix('accounts')->name('accounts-')->group(function () {
+    Route::get('/', [AC::class, 'index'])->name('index');
+    Route::get('/create', [AC::class, 'create'])->name('create');
+    Route::post('/create', [AC::class, 'store'])->name('store');
+    Route::get('/{account}', [AC::class, 'show'])->name('show');
+    Route::get('/edit/{account}', [AC::class, 'edit'])->name('edit');
+    Route::put('/edit/{account}', [AC::class, 'update'])->name('update');
+    Route::delete('/delete/{account}', [AC::class, 'destroy'])->name('delete');
 });
 
 

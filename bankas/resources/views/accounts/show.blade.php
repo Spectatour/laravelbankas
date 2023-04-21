@@ -6,41 +6,34 @@
         <div class="col-8">
             <div class="card mt-5">
                 <div class="card-header">
-                    <h1>Towns</h1>
+                    <h1>Account info</h1>
                 </div>
                 <div class="card-body">
                     <div class="client-line">
                         <div class="client-info">
-                            {{$town->name}}
-                            {{$town->surname}}
-                            <span>{{$town->tt ? 'TIK TOK' : 'FB'}}</span>
+                            {{$account->name}}
+                            {{$account->surname}}
                         </div>
                         <div class="buttons">
-                            <a href="{{route('orders-create', ['id' => $town])}}" class="btn btn-info">new order</a>
-                            <a href="{{route('towns-edit', $town)}}" class="btn btn-success">Edit</a>
-                            <form action="{{route('towns-delete', $town)}}" method="post">
+                            <a href="{{route('orders-create', ['id' => $account])}}" class="btn btn-info">new order</a>
+                            <a href="{{route('accounts-edit', $account)}}" class="btn btn-success">Edit</a>
+                            <form action="{{route('accounts-delete', $account)}}" method="post">
                                 <button type="submit" class="btn btn-danger">delete</button>
                                 @csrf
                                 @method('delete')
                             </form>
                         </div>
                     </div>
-                    <h2>Orders</h2>
+                    <h2>Credit cards</h2>
                     <ul class="list-group">
-                        @forelse($town->order as $order)
+                        @forelse($account->client as $client)
                         <li class="list-group-item">
                             <div class="order-line">
                                 <div class="order-info">
-                                    {{$order->title}}
-                                    {{$order->price}}
+                                    {{$client->name}}
+                                    {{$client->surname}}
                                 </div>
-                                <div class="buttons">
-                                    <form action="{{route('orders-delete', $order)}}" method="post">
-                                        <button type="submit" class="btn btn-danger">delete</button>
-                                        @csrf
-                                        @method('delete')
-                                    </form>
-                                </div>
+                                
                             </div>
                         </li>
                         @empty
