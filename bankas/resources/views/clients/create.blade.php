@@ -30,6 +30,17 @@
                              @if(old('tt')) checked @endif id="tt" name="tt">
                             <label class="form-check-label" for="tt">Create Premium Account</label>
                         </div>
+                        <div class="mb-3">
+                            <label class="form-label">Town</label>
+                            <select class="form-select" name="town_id">
+                                <option value="0">Towns list</option>
+                                @foreach($towns as $town)
+                                <option value="{{$town->id}}">
+                                    {{$town->name}} {{$town->surname}}</option>
+                                @endforeach
+                            </select>
+                            <div class="form-text">Please select town</div>
+                        </div>
                         <button type="submit" class="btn btn-primary"style="background-color: #E8985E;border-color: #E8985E;">Submit</button>
                         @csrf
                     </form>

@@ -21,8 +21,8 @@ return new class extends Migration
             $table->char('asmensKodas', 11);
             $table->string('IBAN', 20);
             $table->unsignedTinyInteger('tt');
-            $table->timestamps();
-        });
+            $table->unsignedBigInteger('town_id');
+            $table->foreign('town_id')->references('id')->on('towns');        });
     }
 
     /**

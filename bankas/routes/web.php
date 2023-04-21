@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BankasController;
 use App\Http\Controllers\CalcController as C;
 use App\Http\Controllers\ClientController as CL;
+use App\Http\Controllers\OrderController as ORD;
+use App\Http\Controllers\TownController as TW;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,6 +54,25 @@ Route::prefix('clients')->name('clients-')->group(function () {
     Route::delete('/delete/{client}', [CL::class, 'destroy'])->name('delete');
 });
 
+Route::prefix('orders')->name('orders-')->group(function () {
+    Route::get('/', [ORD::class, 'index'])->name('index');
+    Route::get('/create', [ORD::class, 'create'])->name('create');
+    Route::post('/create', [ORD::class, 'store'])->name('store');
+    Route::get('/{order}', [ORD::class, 'show'])->name('show');
+    Route::get('/edit/{order}', [ORD::class, 'edit'])->name('edit');
+    Route::put('/edit/{order}', [ORD::class, 'update'])->name('update');
+    Route::delete('/delete/{order}', [ORD::class, 'destroy'])->name('delete');
+});
+
+Route::prefix('towns')->name('towns-')->group(function () {
+    Route::get('/', [TW::class, 'index'])->name('index');
+    Route::get('/create', [TW::class, 'create'])->name('create');
+    Route::post('/create', [TW::class, 'store'])->name('store');
+    Route::get('/{town}', [TW::class, 'show'])->name('show');
+    Route::get('/edit/{town}', [TW::class, 'edit'])->name('edit');
+    Route::put('/edit/{town}', [TW::class, 'update'])->name('update');
+    Route::delete('/delete/{town}', [TW::class, 'destroy'])->name('delete');
+});
 
 
 

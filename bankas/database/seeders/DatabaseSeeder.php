@@ -24,14 +24,33 @@ class DatabaseSeeder extends Seeder
         
         $faker = Faker::create('lt_LT');
 
+        foreach(range(1, 20) as $_) {
+            DB::table('towns')->insert([
+                'name' => $faker->city,
+
+            ]);
+        }
+
         foreach(range(1, 100) as $_) {
             DB::table('clients')->insert([
                 'name' => $faker->firstName,
                 'surname' => $faker->lastName,
                 'balance' => 0,
-                'asmendsKodas' => mt_rand(10000000000, 99999999999),
+                'asmensKodas' => mt_rand(10000000000, 99999999999),
                 'IBAN' => 'LT' . substr(str_shuffle(str_repeat('0123456789', 18)), 0, 18),
                 'tt' => rand(0, 1),
+                'town_id' => rand(1, 15),
+            ]);
+        }
+
+        $p = ['Batai', 'Pica', 'Drugelis', 'Antis', 'Geltoni šortai', 'Stulpas, medinis, 5m',
+        'Guminukai', 'Bananai', 'Laidinė pelė', 'Ausinės', 'Kepurė', 'Padangos'];
+
+        foreach(range(1, 100) as $_) {
+            DB::table('orders')->insert([
+                'title' => $p[rand(0, count($p) - 1)],
+                'price' => rand(10, 1000) / 100,
+                'client_id' => rand(1, 20),
             ]);
         }
     }

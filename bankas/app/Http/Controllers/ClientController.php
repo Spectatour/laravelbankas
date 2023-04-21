@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Town;
+use App\Models\Order;
 use App\Models\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -15,12 +17,45 @@ class ClientController extends Controller
         $this->middleware('auth');
     }
     
-    public function index()
+    public function index(Request $request)
     {
-        $clients = Client::all()->sortBy('name');
+        $sort = $request->sort ?? '';
+        $filter = $request->filter ?? '';
+        $per = (int) ($request->per ?? 10);
+        $page = $request->page ?? 1;
+
+        $clients = match($filter) {
+            'tt' => Client::where('tt', 1),
+            'fb' => Client::where('tt', 0),
+            default => Client::where('tt', 0)->orWhere('tt', 1)
+        };
+
+        $clients = match($sort) {
+            'name_asc' => $clients->orderBy('name'),
+            'name_desc' => $clients->orderBy('name', 'desc'),
+            'surname_asc' => $clients->orderBy('surname'),
+            'surname_desc' => $clients->orderBy('surname', 'desc'),
+            default => $clients
+        };
+
+        $request->session()->put('last-client-view', [
+            'sort' => $sort,
+            'filter' => $filter,
+            'page' => $page,
+            'per' => $per
+        ]);
+
+        $clients = $clients->paginate($per)->withQueryString();
 
         return view('clients.index', [
-            'clients' => $clients
+            'clients' => $clients,
+            'sortSelect' => Client::SORT,
+            'sort' => $sort,
+            'filterSelect' => Client::FILTER,
+            'filter' => $filter,
+            'perSelect' => Client::PER,
+            'per' => $per,
+            'page' => $page
         ]);
 
     }
@@ -28,7 +63,11 @@ class ClientController extends Controller
 
     public function create()
     {
-        return view('clients.create');
+        $towns = Town::all();
+        
+        return view('clients.create',[
+            'towns' => $towns
+        ]);
     }
 
 
@@ -58,6 +97,7 @@ class ClientController extends Controller
         $client->asmensKodas = $request->asmensKodas;
         $client->IBAN = 'LT' . substr(str_shuffle(str_repeat('0123456789', 18)), 0, 18);
         $client->tt = isset($request->tt) ? 1 : 0;
+        $client->town_id = $request->town_id;
         $client->save();
         return redirect()
         ->route('clients-index')
@@ -74,10 +114,13 @@ class ClientController extends Controller
     }
 
 
-    public function edit(Client $client)
+    public function edit(Request $request, Client $client)
     {
+        $towns = Town::all();
+       
         return view('clients.edit', [
-            'client' => $client
+            'client' => $client,
+            'towns' => $towns
         ]);
     }
 
@@ -104,13 +147,24 @@ class ClientController extends Controller
         $client->tt = isset($request->tt) ? 1 : 0;
         $client->save();
         return redirect()
-        ->route('clients-index')
-        ->with('ok', 'The client was updated');
+        ->route('clients-index', $request->session()->get('last-client-view', []))
+        ->with('ok', 'The client was updated')
+        ->with('light-up', $client->id);
     }
 
 
     public function destroy(Client $client)
 {
+
+    if (!$request->confirm && $client->order->count()) {
+        return redirect()
+        ->back()
+        ->with('delete-modal', [
+            'This client has orders. Do you really want to delete?',
+            $client->id
+        ]);
+    }
+
     if ($client->balance > 0) {
         return redirect()
             ->route('clients-index')
