@@ -13,7 +13,11 @@ return new class extends Migration
     {
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 50);
+            $table->string('name', 100);
+            $table->string('surname', 100)->default('Unknown');
+            $table->string('balance', 100);
+            $table->char('asmensKodas', 11);
+            // $table->string('IBAN', 20);
         });
     }
 

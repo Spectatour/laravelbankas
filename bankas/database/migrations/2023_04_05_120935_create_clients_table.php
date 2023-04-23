@@ -19,13 +19,12 @@ return new class extends Migration
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100);
-            $table->string('surname', 100);
             $table->string('balance', 100);
-            $table->char('asmensKodas', 11);
             $table->string('IBAN', 20);
             $table->unsignedTinyInteger('tt');
             $table->unsignedBigInteger('account_id');
-            $table->foreign('account_id')->references('id')->on('accounts');        });
+            $table->foreign('account_id')->references('id')->on('accounts');        
+        });
             
         
     }

@@ -14,14 +14,14 @@
                             <label class="form-label">Client Name</label>
                             <input readonly type="text" class="form-control" name="name"style="background-color: #E8985E;" value="{{$client->name}}">
                         </div>
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
                             <label class="form-label">Client Surname</label>
                             <input readonly type="text" style="background-color: #E8985E;" class="form-control" name="surname"  value="{{$client->surname}}">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">National identification number</label>
                             <input  readonly type="code" style="background-color: #E8985E;" class="form-control" name="asmensKodas" value="{{$client->asmensKodas}}">
-                        </div>
+                        </div> --}}
                         <div class="mb-3">
                             <label class="form-label">Account number</label>
                             <input  readonly class="form-control" style="background-color: #E8985E;" name="IBAN" value="{{$client->IBAN}}">
@@ -35,7 +35,7 @@
                         </div>      
                         <div style="display: flex; justify-content:space-between;">
                                 <button type="submit" class="btn btn-primary"style="background-color: #E8985E;border-color:#E8985E;margin-top: 20px;">Spend money</button>
-                                <a href="{{route('clients-index', $client)}}" class="btn btn-secondary"style="background-color: #54442B;border-color:#54442B;margin-top: 20px;">Back to Clients</a>
+                                <a href="{{route('accounts-index', $client->account)}}" class="btn btn-secondary"style="background-color: #54442B;border-color:#54442B;margin-top: 20px;">Back to Clients</a>
                         </div>
                         @csrf
                         @method('put')                  

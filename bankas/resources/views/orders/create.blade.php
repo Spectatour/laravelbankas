@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-8">
             <div class="card mt-5">
-                <div class="card-header">
+                <div class="card-header"style="background-color: #E8985E;">
                     <h1>Add Order</h1>
                 </div>
                 <div class="card-body">
@@ -13,7 +13,7 @@
                         <div class="mb-3">
                             <label class="form-label">Title</label>
                             <input type="text" class="form-control" name="title" value={{old('title')}}>
-                            <div class="form-text">Please add title of good or bad or whatever here</div>
+                            <div class="form-text">Please add title of goods or products you want to buy</div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Price</label>
@@ -21,7 +21,7 @@
                             <div class="form-text">Please add price to pay</div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Client</label>
+                            <label class="form-label">Card</label>
                             <select class="form-select" name="client_id">
                                 <option value="0">Clients list</option>
                                 @foreach($clients as $client)
@@ -29,9 +29,9 @@
                                 {{$client->name}} {{$client->surname}}</option>
                                 @endforeach
                             </select>
-                            <div class="form-text">Please select client</div>
+                            <div class="form-text">Please select card you wish to add this order to</div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary"style="background-color: #E8985E;border:#E8985E;">Submit</button>
                         @csrf
                     </form>
                 </div>

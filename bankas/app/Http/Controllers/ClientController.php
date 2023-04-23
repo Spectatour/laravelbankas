@@ -33,8 +33,8 @@ class ClientController extends Controller
         $clients = match($sort) {
             'name_asc' => $clients->orderBy('name'),
             'name_desc' => $clients->orderBy('name', 'desc'),
-            'surname_asc' => $clients->orderBy('surname'),
-            'surname_desc' => $clients->orderBy('surname', 'desc'),
+            // 'surname_asc' => $clients->orderBy('surname'),
+            // 'surname_desc' => $clients->orderBy('surname', 'desc'),
             default => $clients
         };
 
@@ -75,13 +75,7 @@ class ClientController extends Controller
 {
     $validator = Validator::make($request->all(), [
         'name' => 'required|min:3',
-        'surname' => 'required|min:3',
-        'asmensKodas' => 'required|digits:11|unique:clients,asmensKodas',
-    ], [
-        'asmensKodas.required' => 'The national identification number field is required.',
-        'asmensKodas.digits' => 'The national identification number field must contain exactly :digits digits.',
-        'asmensKodas.unique' => 'The national identification number already exists.',
-    ]);
+    ], []);
 
     if ($validator->fails()) {
         $request->flash();
@@ -92,16 +86,14 @@ class ClientController extends Controller
         
         $client = new Client;
         $client->name = $request->name;
-        $client->surname = $request->surname;
         $client->balance = 0;
-        $client->asmensKodas = $request->asmensKodas;
         $client->IBAN = 'LT' . substr(str_shuffle(str_repeat('0123456789', 18)), 0, 18);
         $client->tt = isset($request->tt) ? 1 : 0;
-        $client->town_id = $request->town_id;
+        $client->account_id = $request->account_id;
         $client->save();
         return redirect()
-        ->route('clients-index')
-        ->with('ok', 'New client was created');
+        ->route('accounts-index')
+        ->with('ok', 'New card was added successfully');
 
     }
 
@@ -116,11 +108,11 @@ class ClientController extends Controller
 
     public function edit(Request $request, Client $client)
     {
-        $towns = Town::all();
+        $accounts = Account::all();
        
         return view('clients.edit', [
             'client' => $client,
-            'towns' => $towns
+            'accounts' => $accounts
         ]);
     }
 
@@ -129,7 +121,7 @@ class ClientController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|min:3',
-            'surname' => 'required|min:3',
+            // 'surname' => 'required|min:3',
         ]);
 
         if ($validator->fails()) {
@@ -140,15 +132,15 @@ class ClientController extends Controller
         }
         
         $client->name = $request->name;
-        $client->surname = $request->surname;
+        // $client->surname = $request->surname;
         $client->balance = $request->balance;
-        $client->asmensKodas = $request->asmensKodas;
+        // $client->asmensKodas = $request->asmensKodas;
         $client->IBAN = $request->IBAN;
         $client->tt = isset($request->tt) ? 1 : 0;
         $client->save();
         return redirect()
         ->route('clients-index', $request->session()->get('last-client-view', []))
-        ->with('ok', 'The client was updated')
+        ->with('ok', 'The card name was updated')
         ->with('light-up', $client->id);
     }
 
@@ -156,25 +148,25 @@ class ClientController extends Controller
     public function destroy(Client $client)
 {
 
-    if (!$request->confirm && $client->order->count()) {
-        return redirect()
-        ->back()
-        ->with('delete-modal', [
-            'This client has orders. Do you really want to delete?',
-            $client->id
-        ]);
-    }
+    // if (!$request->confirm && $client->order->count()) {
+    //     return redirect()
+    //     ->back()
+    //     ->with('delete-modal', [
+    //         'This client has orders. Do you really want to delete?',
+    //         $client->id
+    //     ]);
+    // }
 
     if ($client->balance > 0) {
         return redirect()
             ->route('clients-index')
-            ->with('info', 'You cannot delete an account with a balance');
+            ->with('info', 'You cannot delete a card with a balance');
     }
 
     $client->delete();
     return redirect()
         ->route('clients-index')
-        ->with('ok', 'The client was deleted successfully');
+        ->with('ok', 'The card was deleted successfully');
 }
 
 public function editAdd(Client $client)
@@ -188,7 +180,7 @@ public function editAdd(Client $client)
 public function editWithdraw(Client $client)
 {
     return view('clients.editWithdraw', [
-        'title' => 'Withdraw from Client Balance',
+        'title' => 'Withdraw from Card Balance',
         'client' => $client
     ]);
 }

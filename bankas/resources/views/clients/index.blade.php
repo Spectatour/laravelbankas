@@ -3,12 +3,12 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-8">
+        <div class="col-12">
             <div class="card mt-5">
                 <div class="card-header" style="background-color: #E8985E;">
-                    <h1>Clients List</h1>
-                </div>
-                <form action="{{route('clients-index')}}" method="get">
+                    <h1>Card List</h1>
+
+                    <form action="{{route('clients-index')}}" method="get">
 
                         <div class="container">
                             <div class="row">
@@ -67,38 +67,39 @@
                         @forelse($clients as $client)
                         <li class="list-group-item">
                             <div class="client-line @if(Session::has('light-up') && Session::get('light-up') ==  $client->id) active @endif">
-                                <div class="client-info">
+                                <div class="client-info" style="margin-right: 20px;">
                                     <h4 class="mb-1" style="margin-right:10px;">{{$client->name}} {{$client->surname}}</h4>
-                                    <p class="mb-1" style="margin-right:10px;"><strong><span style="color:#E8985E;font-weight: bold;letter-spacing: 0px;padding-left: 0px;">Balance:</span></strong> {{$client->balance}} €</p>
-                                    <p class="mb-1"><strong><span style="color:#E8985E;font-weight: bold;letter-spacing: 0px;padding-left: 0px;">National ID:</span></strong> {{$client->asmensKodas}}</p>
-                                    <span class="mb-1" style="color:#262A10;margin-right: 30px;">{{$client->tt ? 'Premium' : 'Basic' }}</span>
-                                    <div class="orders-count">orders: [{{$client->order->count()}}]</div>
-                                </div>
-                                <div class="buttons">
-                                    <a href="{{route('clients-editAdd', $client)}}" class="btn btn-info" style="background-color:green;border:green;">Add</a>
-                                    <a href="{{route('clients-editWithdraw', $client)}}" class="btn btn-info" style="background-color:red;border:red;">Withdraw</a>
-                                    <a href="{{route('clients-show', $client)}}" class="btn btn-info" style="background-color:#E8985E;border:#E8985E;">Show</a>
-                                    <a href="{{route('clients-edit', $client)}}" class="btn btn-success" style="background-color:blue;border:blue;">Edit</a>
-                                    <form action="{{route('clients-delete', $client)}}" method="post">
-                                        <button type="submit" class="btn btn-danger" style="background-color:#7F0000;">delete</button>
-                                        @csrf
-                                        @method('delete')
-                                    </form>
-                                </div>
+                                    <p class="mb-1" style="margin-right:10px;"><strong><span style="color:#267F00;font-weight: bold;letter-spacing: 0px;padding-left: 0px;">Balance:</span></strong> {{$client->balance}} €</p>
+                                    <p class="mb-1"><strong><span style="color:#267F00;font-weight: bold;letter-spacing: 0px;padding-left: 0px;">IBAN:</span></strong> {{$client->IBAN}}</p>
+                                    {{-- <span class="mb-1" style="color:#262A10;margin-right: 30px;">{{$client->tt ? 'Premium' : 'Basic' }}</span> --}}
+                                    {{-- <div class="orders-count">orders: [{{$client->order->count()}}]
+                                </div> --}}
                             </div>
-                        </li>
-                        @empty
-                        <li class="list-group-item">
-                            <div class="client-line">No clients</div>
-                        </li>
-                        @endforelse
-                    </ul>
+                            <div class="buttons">
+                                <a href="{{route('clients-editAdd', $client)}}" class="btn btn-info" style="background-color:green;border:green;">Add</a>
+                                <a href="{{route('clients-editWithdraw', $client)}}" class="btn btn-info" style="background-color:red;border:red;">Withdraw</a>
+                                <a href="{{route('clients-show', $client)}}" class="btn btn-info" style="background-color:#E8985E;border:#E8985E;">Show</a>
+                                <a href="{{route('clients-edit', $client)}}" class="btn btn-success" style="background-color:blue;border:blue;">Edit</a>
+                                <form action="{{route('clients-delete', $client)}}" method="post">
+                                    <button type="submit" class="btn btn-danger" style="background-color:#7F0000;">delete</button>
+                                    @csrf
+                                    @method('delete')
+                                </form>
+                            </div>
                 </div>
-            </div>
-            <div class="m-2">
-                {{ $clients->links() }}
+                </li>
+                @empty
+                <li class="list-group-item">
+                    <div class="client-line">No clients</div>
+                </li>
+                @endforelse
+                </ul>
             </div>
         </div>
+        <div class="m-2">
+            {{ $clients->links() }}
+        </div>
+
     </div>
-</div>
-@endsection
+
+    @endsection

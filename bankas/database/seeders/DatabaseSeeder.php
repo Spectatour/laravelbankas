@@ -26,17 +26,18 @@ class DatabaseSeeder extends Seeder
 
         foreach(range(1, 20) as $_) {
             DB::table('accounts')->insert([
-                'name' => $faker->city,
-
+                'name' => $faker->firstName,
+                'surname' => $faker->lastName,
+                'balance' => 0,
+                'asmensKodas' => mt_rand(10000000000, 99999999999),
+                // 'IBAN' => 'LT' . substr(str_shuffle(str_repeat('0123456789', 18)), 0, 18),
             ]);
         }
 
         foreach(range(1, 100) as $_) {
             DB::table('clients')->insert([
                 'name' => $faker->firstName,
-                'surname' => $faker->lastName,
                 'balance' => 0,
-                'asmensKodas' => mt_rand(10000000000, 99999999999),
                 'IBAN' => 'LT' . substr(str_shuffle(str_repeat('0123456789', 18)), 0, 18),
                 'tt' => rand(0, 1),
                 'account_id' => rand(1, 15),

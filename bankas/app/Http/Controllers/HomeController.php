@@ -2,20 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Account;
+use App\Models\Client;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     /**
      * Show the application dashboard.
      *
@@ -23,6 +15,15 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $totalClients = Client::count();
+        $totalAccounts = Account::count();
+        
+        $totalBalance = DB::table('clients')->sum('balance');
+
+        return view('home', [
+            'totalAccounts' => $totalAccounts,
+            'totalBalance' => $totalBalance,
+            'totalClients' => $totalClients,
+        ]);
     }
 }

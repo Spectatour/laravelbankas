@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\Order;
+use App\Models\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 
 
@@ -13,22 +16,19 @@ class AccountController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        $accounts = Account::all();
+{
+    $accounts = Account::all();
 
-        // nereiku, nes cia yra FRANKENSTEINAS
-        $accounts->each(function($t) {
-            $ordersCount = 0;
-            $t->client->each(function($c) use(&$ordersCount) {
-                $ordersCount += $c->order->count();
-            });
-            $t->ordersCount = $ordersCount;
-        });
-        
-        return view('accounts.index', [
-            'accounts' => $accounts,
-        ]);
+    foreach ($accounts as $account) {
+        $totalBalance = $account->client->sum('balance');
+        $account->totalBalance = $totalBalance;
     }
+
+    return view('accounts.index', [
+        'accounts' => $accounts,
+    ]);
+}
+
 
     
     public function create()
@@ -38,21 +38,44 @@ class AccountController extends Controller
 
   
     public function store(Request $request)
-    {
-        Account::create([
-            'name' => $request->name,
-        ]);
+{   
+    $validator = Validator::make($request->all(), [
+        'name' => 'required|min:3',
+        'surname' => 'required|min:3',
+        'asmensKodas' => 'required|digits:11|unique:accounts,asmensKodas',
+    ], [
+        'asmensKodas.required' => 'The national identification number field is required.',
+        'asmensKodas.digits' => 'The national identification number field must contain exactly :digits digits.',
+        'asmensKodas.unique' => 'The national identification number already exists.',
+    ]);
 
-        return redirect()->route('accounts-index');
+    if ($validator->fails()) {
+        $request->flash();
+        return redirect()
+            ->back()
+            ->withErrors($validator);
     }
+
+    $account = new Account;
+    $account->name = $request->name;
+    $account->surname = $request->surname;
+    $account->balance = 0;
+    $account->asmensKodas = $request->asmensKodas;
+    $account->save();
+    return redirect()
+    ->route('accounts-index')
+    ->with('ok', 'New client was created');
+
+    return redirect()->route('accounts-index');
+}
+
 
    
     public function show(Account $account)
-    {
-        return view('accounts.show', [
-            'account' => $account
-        ]);
-    }
+{
+    $totalBalance = Client::where('account_id', $account->id)->sum('balance');
+    return view('accounts.show', compact('account', 'totalBalance'));
+}
 
    
     public function edit(Account $account)
@@ -65,8 +88,11 @@ class AccountController extends Controller
     
     public function update(Request $request, Account $account)
     {
+
+        
         $account->update([
             'name' => $request->name,
+            'surname' => $request->surname,
         ]);
 
         return redirect()->route('accounts-index')
@@ -78,10 +104,21 @@ class AccountController extends Controller
     {
         if ($account->client->count()) {
             return redirect()->back()
-            ->with('info', 'Account has active cards clients');
+            ->with('info', 'Account has active cards');
         }
         $account->delete();
         return redirect()->back()
         ->with('ok', 'Account was deleted');
     }
+
+    public function getTotalBalance(Account $account)
+{
+    $totalBalance = DB::table('clients')
+        ->where('account_id', $account->id)
+        ->sum('balance');
+    
+    return $totalBalance;
 }
+
+}
+

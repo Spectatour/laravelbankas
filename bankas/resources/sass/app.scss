@@ -20,7 +20,7 @@
         .clients-count {
             font-weight: bold;
             padding: 0 5px;
-            color: darkorchid;
+            color: #267F00;
             line-height: 3em;
         }
         span {
@@ -29,10 +29,17 @@
             letter-spacing: 5px;
             padding-left: 20px;
         }
+        p {
+            font-weight: bold;
+            padding: 0 5px;
+            color: #E8985E;
+            line-height: 3em;
+        }
     }
     .buttons {
         display: flex;
         justify-content: flex-end;
+        text-align: center;
         gap: 10px;
     }
 }

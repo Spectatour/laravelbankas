@@ -6,7 +6,7 @@
         <div class="col-8">
             <div class="card mt-5">
                 <div class="card-header" style="background-color: #E8985E;;">
-                    <h1 >Client</h1>
+                    <h1 >Card</h1>
                 </div>
                 <div class="card-body">
                     
@@ -14,7 +14,7 @@
                         <div class="client-info">
                             {{$client->name}}
                             {{$client->surname}}
-                            <span>{{$client->tt ? 'TIK TOK' : 'FB'}}</span>
+                            <span>{{$client->tt ? 'Premium' : 'Basic'}}</span>
                         </div>
                         <div class="buttons">
                             <a href="{{route('orders-create', ['id' => $client])}}" class="btn btn-info">new order</a>
@@ -26,7 +26,7 @@
                             </form>
                         </div>
                     </div>
-                    <h2>Orders</h2>
+                    <h2>Pending transactions:</h2>
                     <ul class="list-group">
                         @forelse($client->order as $order)
                         <li class="list-group-item">

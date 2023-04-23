@@ -15,16 +15,16 @@
                             <input type="text" class="form-control" name="name" value={{old('name')}}>
                             <div class="form-text">Please add cards name here</div>
                         </div>
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
                             <label class="form-label">Client Surname</label>
                             <input type="text" class="form-control" name="surname" value={{old('surname')}}>
                             <div class="form-text">Please add client surname here</div>
-                        </div>
-                        <div class="mb-3">
+                        </div> --}}
+                        {{-- <div class="mb-3">
                             <label class="form-label">National identification number</label>
                             <input  required type="code" class="form-control" name="asmensKodas">
                             <div class="form-text">Please add your National identification number</div>
-                        </div>
+                        </div> --}}
                         <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input"
                              @if(old('tt')) checked @endif id="tt" name="tt">
@@ -32,7 +32,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Accounts</label>
-                            <select class="form-select" name="town_id">
+                            <select class="form-select" name="account_id">
                                 <option value="0">Account list</option>
                                 @foreach($accounts as $account)
                                 <option value="{{$account->id}}">

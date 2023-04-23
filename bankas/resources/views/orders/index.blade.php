@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-12">
             <div class="card mt-5">
-                <div class="card-header">
+                <div class="card-header"style="background-color: #E8985E;">
                     <h1>Orders List</h1>
                 </div>
                 <div class="card-body">
